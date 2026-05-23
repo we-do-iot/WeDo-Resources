@@ -1,15 +1,19 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.3)
+ * WeDo Tank v3 — Stylesheet (v2.4)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
  *
+ * Cambios v2.4:
+ *  - Fix sizing horizontal: wrapper height:95% + width:max-content,
+ *    tank-body height:100% + aspect-ratio deriva width. Antes (v2.3)
+ *    width:auto + height:auto rompia el aspect-ratio y colapsaba todo.
+ *
  * Cambios v2.3:
  *  - Labels horizontal no cortados: min-width tank-scale subido a
  *    clamp(46px, 13cqmin, 74px) para acomodar 5 digitos.
- *  - Ticks pegados al tanque: wrapper horizontal width:auto +
- *    tank-body horizontal flex:0 0 auto + gap:2px (no deja hueco
- *    entre tank-body y tank-scale).
+ *  - Ticks pegados al tanque: wrapper horizontal width auto +
+ *    tank-body horizontal flex:0 0 auto + gap:2px.
  *
  * Cambios v2.2:
  *  - Fix overlap 0/max en horizontal: drop height:100% en scale,
@@ -95,13 +99,14 @@
     gap: clamp(2px, 1cqmin, 6px);
 }
 
-/* HORIZONTAL: wrapper toma altura del tanque y se encoge al ancho real
-   (tank + scale) para no dejar hueco entre ambos. tank-container ya centra. */
+/* HORIZONTAL: altura fija (95%) propaga a tank-body height:100%,
+   aspect-ratio deriva su width. wrapper width:max-content lo encoge al
+   ancho combinado de tank+scale para que no haya hueco; tank-container
+   centra horizontalmente. */
 .tank-wrapper--horizontal {
     flex-direction: row;
-    height: auto;
-    max-height: 95%;
-    width: auto;
+    height: 95%;
+    width: max-content;
     max-width: 100%;
     align-items: stretch;
     gap: 2px;
@@ -127,7 +132,7 @@
 /* ---------- Horizontal acostado ---------- */
 .tank-body--horizontal {
     aspect-ratio: 12 / 5;
-    height: auto;
+    height: 100%;
     width: auto;
     max-width: 100%;
     max-height: 100%;
