@@ -1,8 +1,15 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.2)
+ * WeDo Tank v3 — Stylesheet (v2.3)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.3:
+ *  - Labels horizontal no cortados: min-width tank-scale subido a
+ *    clamp(46px, 13cqmin, 74px) para acomodar 5 digitos.
+ *  - Ticks pegados al tanque: wrapper horizontal width:auto +
+ *    tank-body horizontal flex:0 0 auto + gap:2px (no deja hueco
+ *    entre tank-body y tank-scale).
  *
  * Cambios v2.2:
  *  - Fix overlap 0/max en horizontal: drop height:100% en scale,
@@ -88,14 +95,16 @@
     gap: clamp(2px, 1cqmin, 6px);
 }
 
-/* HORIZONTAL: wrapper toma altura del tanque, no fija.
-   stretch hace que tank-body y tank-scale tengan misma altura. */
+/* HORIZONTAL: wrapper toma altura del tanque y se encoge al ancho real
+   (tank + scale) para no dejar hueco entre ambos. tank-container ya centra. */
 .tank-wrapper--horizontal {
     flex-direction: row;
     height: auto;
     max-height: 95%;
-    width: 100%;
+    width: auto;
+    max-width: 100%;
     align-items: stretch;
+    gap: 2px;
 }
 
 .tank-wrapper--cone { align-items: stretch; }
@@ -122,7 +131,7 @@
     width: auto;
     max-width: 100%;
     max-height: 100%;
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     min-width: 0;
     background-color: var(--wedo-gris-tanque);
     border-radius: 12px;
@@ -253,8 +262,8 @@
     position: relative;
     height: calc(100% - 4px);
     align-self: center;
-    min-width: clamp(36px, 10cqmin, 58px);
-    padding-right: 4px;
+    min-width: clamp(46px, 13cqmin, 74px);
+    padding-right: 2px;
     flex-shrink: 0;
     box-sizing: border-box;
 }
