@@ -1,11 +1,14 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.1)
+ * WeDo Tank v3 — Stylesheet (v2.2)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
- * CDN:  https://cdn.jsdelivr.net/gh/we-do-iot/WeDo-Resources@main/widgets/tank-v3/tank.css
+ * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.2:
+ *  - Fix overlap 0/max en horizontal: drop height:100% en scale,
+ *    usar align-self:stretch puro (parent es height:auto)
  *
  * Cambios v2.1:
- *  - Fix escala horizontal: matchea altura del tanque, no del wrapper
  *  - tank-wrapper--horizontal: stretch + auto height
  *  - Min-width de escala mas grande + padding-right para no cortar numeros
  *  - JS: minPxPerTick bajado a 14 (mas marcas en horizontal)
@@ -256,10 +259,12 @@
     box-sizing: border-box;
 }
 
-/* En horizontal: stretch para alinear altura con la del tanque */
+/* En horizontal: stretch hace match con altura del tank-body.
+   No usamos height:% porque el wrapper es height:auto y colapsaria. */
 .tank-wrapper--horizontal .tank-scale {
-    height: 100%;
+    height: auto;
     align-self: stretch;
+    min-height: 0;
 }
 
 .scale-major {
