@@ -1,0 +1,436 @@
+/* ==========================================================
+ * WeDo Tank v3 — Stylesheet (v2.1)
+ * --------------------------------------------------------
+ * Repo: https://github.com/we-do-iot/WeDo-Resources
+ * CDN:  https://cdn.jsdelivr.net/gh/we-do-iot/WeDo-Resources@main/widgets/tank-v3/tank.css
+ *
+ * Cambios v2.1:
+ *  - Fix escala horizontal: matchea altura del tanque, no del wrapper
+ *  - tank-wrapper--horizontal: stretch + auto height
+ *  - Min-width de escala mas grande + padding-right para no cortar numeros
+ *  - JS: minPxPerTick bajado a 14 (mas marcas en horizontal)
+ * ========================================================== */
+
+/* ---------- Variables ---------- */
+.sensor-container {
+    --wedo-naranja: #EE7623;
+    --wedo-naranja-dark: #c45d18;
+    --wedo-casi-negro: #24272A;
+    --wedo-gris: #9EA1A2;
+    --wedo-gris-claro: #e0e0e0;
+    --wedo-gris-tanque: #f5f5f5;
+    --liquid-color: var(--wedo-naranja);
+}
+
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.sensor-container {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    container-type: size;
+    container-name: tank;
+}
+
+/* ---------- Card ---------- */
+.metric-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: clamp(6px, 2cqmin, 12px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(4px, 1.5cqmin, 10px);
+    border-left: 4px solid var(--wedo-naranja);
+    transition: box-shadow 0.2s ease, border-left-color 0.2s ease;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+}
+
+.metric-card.clickable { cursor: pointer; }
+.metric-card.clickable:hover { border-left-color: #ff8c42; }
+
+/* ---------- Tank container ---------- */
+.tank-container {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    padding: clamp(4px, 2cqmin, 16px) clamp(2px, 1cqmin, 6px) clamp(4px, 2cqmin, 10px);
+}
+
+/* ---------- Wrapper ---------- */
+.tank-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    height: 95%;
+    max-width: 100%;
+    gap: clamp(2px, 1cqmin, 6px);
+}
+
+/* HORIZONTAL: wrapper toma altura del tanque, no fija.
+   stretch hace que tank-body y tank-scale tengan misma altura. */
+.tank-wrapper--horizontal {
+    flex-direction: row;
+    height: auto;
+    max-height: 95%;
+    width: 100%;
+    align-items: stretch;
+}
+
+.tank-wrapper--cone { align-items: stretch; }
+
+/* ---------- Vertical default ---------- */
+.tank-body {
+    aspect-ratio: 7 / 12;
+    height: 100%;
+    width: auto;
+    min-width: 0;
+    flex-shrink: 1;
+    background-color: var(--wedo-gris-tanque);
+    border-radius: 8px;
+    border: 2px solid var(--wedo-casi-negro);
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* ---------- Horizontal acostado ---------- */
+.tank-body--horizontal {
+    aspect-ratio: 12 / 5;
+    height: auto;
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+    flex: 1 1 auto;
+    min-width: 0;
+    background-color: var(--wedo-gris-tanque);
+    border-radius: 12px;
+    border: 2px solid var(--wedo-casi-negro);
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Tornillos en las 4 esquinas */
+.screw {
+    position: absolute;
+    width: clamp(3px, 1cqmin, 5px);
+    height: clamp(3px, 1cqmin, 5px);
+    background: var(--wedo-casi-negro);
+    border-radius: 50%;
+    z-index: 4;
+}
+.screw.tl { top: clamp(3px, 1.2cqmin, 6px); left: clamp(3px, 1.2cqmin, 6px); }
+.screw.tr { top: clamp(3px, 1.2cqmin, 6px); right: clamp(3px, 1.2cqmin, 6px); }
+.screw.bl { bottom: clamp(3px, 1.2cqmin, 6px); left: clamp(3px, 1.2cqmin, 6px); }
+.screw.br { bottom: clamp(3px, 1.2cqmin, 6px); right: clamp(3px, 1.2cqmin, 6px); }
+
+/* ---------- Cono ---------- */
+.tank-cone-group {
+    position: relative;
+    height: 100%;
+    flex-shrink: 1;
+    aspect-ratio: 7 / 13.5;
+}
+
+.tank-cone-clipped {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(0 0, 100% 0, 100% 74%, 50% 100%, 0 74%);
+    overflow: hidden;
+}
+
+.tank-cone-bg {
+    position: absolute;
+    inset: 0;
+    background-color: var(--wedo-gris-tanque);
+}
+
+.tank-cone-liquid-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    transition: height 0.5s ease-out;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.tank-cone-liquid-fill {
+    position: absolute;
+    inset: 0;
+    background-color: var(--liquid-color);
+}
+
+.tank-cone-liquid-fill::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.4);
+    z-index: 1;
+}
+
+.tank-cone-liquid-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+    pointer-events: none;
+}
+
+.tank-cone-border {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* ---------- Liquid (default + horizontal) ---------- */
+.tank-liquid {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background-color: var(--liquid-color);
+    transition: height 0.5s ease-out;
+}
+
+.tank-liquid::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.4);
+    z-index: 1;
+}
+
+.tank-liquid::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+    pointer-events: none;
+}
+
+.tank-glass {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.35) 30%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* ---------- Scale ---------- */
+.tank-scale {
+    position: relative;
+    height: calc(100% - 4px);
+    align-self: center;
+    min-width: clamp(36px, 10cqmin, 58px);
+    padding-right: 4px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+/* En horizontal: stretch para alinear altura con la del tanque */
+.tank-wrapper--horizontal .tank-scale {
+    height: 100%;
+    align-self: stretch;
+}
+
+.scale-major {
+    position: absolute;
+    right: 4px;
+    width: calc(100% - 4px);
+    height: 0;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    transform: translateY(-50%);
+}
+
+.scale-major-line {
+    width: clamp(7px, 2.4cqmin, 11px);
+    height: 1.5px;
+    background-color: var(--wedo-casi-negro);
+    flex-shrink: 0;
+}
+
+.scale-major-label {
+    font-family: 'Courier New', 'Roboto Mono', monospace;
+    font-size: clamp(11px, 3.2cqmin, 15px);
+    font-weight: 700;
+    color: var(--wedo-casi-negro);
+    line-height: 1;
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+}
+
+.scale-minor {
+    position: absolute;
+    right: 4px;
+    width: 0;
+    height: 1px;
+    transform: translateY(-50%);
+}
+
+.scale-minor-line {
+    width: clamp(3px, 1cqmin, 4px);
+    height: 1px;
+    background-color: var(--wedo-gris);
+}
+
+.scale-cone-marker .scale-major-line {
+    background: var(--wedo-naranja);
+    width: clamp(7px, 2.2cqmin, 10px);
+}
+
+.scale-cone-marker .scale-major-label {
+    color: var(--wedo-naranja);
+    font-size: clamp(8px, 2.6cqmin, 12px);
+}
+
+/* ---------- Card content ---------- */
+.card-content {
+    text-align: center;
+    width: 100%;
+    flex-shrink: 0;
+    border-top: 1px solid var(--wedo-gris-claro);
+    padding-top: clamp(4px, 1.5cqmin, 10px);
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+    gap: clamp(4px, 2cqmin, 14px);
+}
+
+.data-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+    flex: 1;
+}
+
+/* TIPOGRAFIA */
+.card-value {
+    font-size: clamp(18px, 7.8cqmin, 34px);
+    font-weight: 700;
+    color: var(--wedo-casi-negro);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-value--primary {
+    color: var(--wedo-naranja);
+    font-size: clamp(24px, 9.6cqmin, 44px);
+}
+
+.card-value .unit {
+    font-size: clamp(13px, 4.8cqmin, 22px);
+    font-weight: 500;
+    color: var(--wedo-gris);
+    margin-left: 2px;
+}
+
+.card-label {
+    font-size: clamp(12px, 3.12cqmin, 16px);
+    color: var(--wedo-gris);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.last-update {
+    font-size: clamp(11px, 3cqmin, 13px);
+    color: var(--wedo-gris);
+    width: 100%;
+    text-align: right;
+    padding: 2px 4px 0;
+    margin-top: 2px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
+/* ========================================================
+ * RESPONSIVE — Container queries
+ * ======================================================== */
+
+@container tank (max-width: 180px), (max-height: 180px) {
+    .scale-minor { display: none; }
+    .scale-major-label { display: none; }
+    .data-block.data-secondary { display: none; }
+    .last-update { display: none; }
+    .screw { display: none; }
+}
+
+@container tank (max-height: 130px) {
+    .card-label { display: none; }
+    .scale-cone-marker { display: none; }
+}
+
+@container tank (min-width: 180px) and (max-width: 280px) {
+    .scale-minor { display: none; }
+}
+
+/* ========================================================
+ * Clases controladas por JS
+ * ======================================================== */
+.tank-scale.density-low .scale-minor:nth-child(even) { display: none; }
+.tank-scale.density-very-low .scale-minor { display: none; }
+
+.layout-tiny .tank-container,
+.layout-tiny .card-label,
+.layout-tiny .last-update {
+    display: none;
+}
+.layout-tiny .metric-card {
+    justify-content: center;
+    padding: 4px 8px;
+}
+
+.layout-narrow .tank-container,
+.layout-narrow .tank-scale,
+.layout-narrow .last-update {
+    display: none;
+}
+.layout-narrow .metric-card {
+    padding: 4px;
+    gap: 2px;
+}
+
+.hide-scale .tank-scale {
+    display: none;
+}
