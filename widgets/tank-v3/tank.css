@@ -1,11 +1,16 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.4)
+ * WeDo Tank v3 — Stylesheet (v2.5)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
  *
+ * Cambios v2.5:
+ *  - Tank horizontal demasiado grande en cards casi cuadradas: cap altura
+ *    a min(95cqb, 35cqi). Antes (v2.4) usaba 95% del alto puro, el ancho
+ *    derivado por aspect 12:5 explotaba.
+ *
  * Cambios v2.4:
- *  - Fix sizing horizontal: wrapper height:95% + width:max-content,
+ *  - Fix sizing horizontal: wrapper height + width:max-content,
  *    tank-body height:100% + aspect-ratio deriva width. Antes (v2.3)
  *    width:auto + height:auto rompia el aspect-ratio y colapsaba todo.
  *
@@ -99,13 +104,14 @@
     gap: clamp(2px, 1cqmin, 6px);
 }
 
-/* HORIZONTAL: altura fija (95%) propaga a tank-body height:100%,
-   aspect-ratio deriva su width. wrapper width:max-content lo encoge al
-   ancho combinado de tank+scale para que no haya hueco; tank-container
-   centra horizontalmente. */
+/* HORIZONTAL: altura tope = min(95% del alto, 35% del ancho del container).
+   El segundo termino evita que en cards cuadradas o altas el tanque crezca
+   gigante (aspect 12:5 deriva el width desde el height).
+   width:max-content encoge al ancho real (tank + scale), centrado por
+   tank-container. */
 .tank-wrapper--horizontal {
     flex-direction: row;
-    height: 95%;
+    height: min(95cqb, 35cqi);
     width: max-content;
     max-width: 100%;
     align-items: stretch;
