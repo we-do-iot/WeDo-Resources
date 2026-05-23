@@ -1,8 +1,23 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.5)
+ * WeDo Tank v3 — Stylesheet (v2.6)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.6:
+ *  - Labels de la escala dejaban de caber al achicar el widget y
+ *    desbordaban el .tank-scale por la derecha (clip de .metric-card).
+ *    Restructurar .scale-major: line/label son hijos absolutos con
+ *    left/right acotados al ancho del .tank-scale; label tiene
+ *    overflow:hidden propio. Nunca desborda.
+ *  - tank-container ahora es container (tankc) para que el cap de
+ *    altura del wrapper horizontal lea cqi/cqb del tank-container
+ *    real, no del sensor-container.
+ *  - Cap altura wrapper horizontal: min(95cqb, (100cqi - 80px)/2.4).
+ *    Reserva 80px aprox para la escala dentro del ancho del
+ *    tank-container, evita overflow horizontal en cards chicas.
+ *  - Bump min-width .tank-scale: clamp(54, 15cqmin, 80) para que el
+ *    label de 5 digitos quepa en cards pequenas.
  *
  * Cambios v2.5:
  *  - Tank horizontal demasiado grande en cards casi cuadradas: cap altura
@@ -92,6 +107,8 @@
     min-width: 0;
     overflow: hidden;
     padding: clamp(4px, 2cqmin, 16px) clamp(2px, 1cqmin, 6px) clamp(4px, 2cqmin, 10px);
+    container-type: size;
+    container-name: tankc;
 }
 
 /* ---------- Wrapper ---------- */
@@ -104,14 +121,15 @@
     gap: clamp(2px, 1cqmin, 6px);
 }
 
-/* HORIZONTAL: altura tope = min(95% del alto, 35% del ancho del container).
-   El segundo termino evita que en cards cuadradas o altas el tanque crezca
-   gigante (aspect 12:5 deriva el width desde el height).
-   width:max-content encoge al ancho real (tank + scale), centrado por
-   tank-container. */
+/* HORIZONTAL: alto = min(95% del block-size del tank-container,
+   (inline-size - reserva-de-escala) / aspect_ratio).
+   Asi siempre cabe horizontalmente (reserva ~80px para la escala) y nunca
+   pasa el alto del tank-container. cqb/cqi referencian a .tank-container
+   (container-name tankc).
+   width:max-content encoge al ancho real, tank-container lo centra. */
 .tank-wrapper--horizontal {
     flex-direction: row;
-    height: min(95cqb, 35cqi);
+    height: min(95cqb, calc((100cqi - 80px) / 2.4));
     width: max-content;
     max-width: 100%;
     align-items: stretch;
@@ -273,10 +291,12 @@
     position: relative;
     height: calc(100% - 4px);
     align-self: center;
-    min-width: clamp(46px, 13cqmin, 74px);
+    min-width: clamp(54px, 15cqmin, 80px);
     padding-right: 2px;
     flex-shrink: 0;
     box-sizing: border-box;
+    --scale-line-w: clamp(7px, 2.4cqmin, 11px);
+    --scale-gap: 3px;
 }
 
 /* En horizontal: stretch hace match con altura del tank-body.
@@ -287,25 +307,34 @@
     min-height: 0;
 }
 
+/* scale-major: contenedor invisible, line y label son hijos absolutos
+   con left/right acotados al ancho real del .tank-scale, evitando
+   overflow horizontal del label. */
 .scale-major {
     position: absolute;
-    right: 4px;
-    width: calc(100% - 4px);
+    left: 0;
+    right: 0;
     height: 0;
-    display: flex;
-    align-items: center;
-    gap: 3px;
     transform: translateY(-50%);
 }
 
 .scale-major-line {
-    width: clamp(7px, 2.4cqmin, 11px);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: var(--scale-line-w);
     height: 1.5px;
     background-color: var(--wedo-casi-negro);
-    flex-shrink: 0;
 }
 
 .scale-major-label {
+    position: absolute;
+    left: calc(var(--scale-line-w) + var(--scale-gap));
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: left;
     font-family: 'Courier New', 'Roboto Mono', monospace;
     font-size: clamp(11px, 3.2cqmin, 15px);
     font-weight: 700;
@@ -313,11 +342,13 @@
     line-height: 1;
     letter-spacing: -0.5px;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
 }
 
 .scale-minor {
     position: absolute;
-    right: 4px;
+    left: 0;
     width: 0;
     height: 1px;
     transform: translateY(-50%);
