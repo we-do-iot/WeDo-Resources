@@ -1,8 +1,14 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.6)
+ * WeDo Tank v3 — Stylesheet (v2.7)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.7:
+ *  - Soporte para skip pattern de labels (.scale-major.label-hidden).
+ *    JS marca ticks intermedios cuando no entran; primero y ultimo
+ *    siempre quedan visibles. La regla de container query ya no
+ *    oculta todos los labels en cards <=180px (lo maneja JS).
  *
  * Cambios v2.6:
  *  - Labels de la escala dejaban de caber al achicar el widget y
@@ -446,10 +452,15 @@
 
 @container tank (max-width: 180px), (max-height: 180px) {
     .scale-minor { display: none; }
-    .scale-major-label { display: none; }
     .data-block.data-secondary { display: none; }
     .last-update { display: none; }
     .screw { display: none; }
+}
+
+/* Label skip pattern: JS marca ticks intermedios con .label-hidden
+   manteniendo siempre primero (0) y ultimo (max) visibles. */
+.scale-major.label-hidden .scale-major-label {
+    display: none;
 }
 
 @container tank (max-height: 130px) {
