@@ -1,8 +1,13 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.8)
+ * WeDo Tank v3 — Stylesheet (v2.9)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.9:
+ *  - Clip-path del cono dinamico: --cone-pct (default 26) controla
+ *    que porcentaje del alto visual ocupa el cono. JS lo setea segun
+ *    cone_height/h_total_eff del tank_config.
  *
  * Cambios v2.8:
  *  - Fix borde cono desplazado: forzar width/height 100% + display:block
@@ -207,7 +212,14 @@
 .tank-cone-clipped {
     position: absolute;
     inset: 0;
-    clip-path: polygon(0 0, 100% 0, 100% 74%, 50% 100%, 0 74%);
+    --cone-pct: 26;
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% calc(100% - var(--cone-pct) * 1%),
+        50% 100%,
+        0 calc(100% - var(--cone-pct) * 1%)
+    );
     overflow: hidden;
 }
 
