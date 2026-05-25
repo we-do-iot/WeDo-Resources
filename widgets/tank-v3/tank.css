@@ -1,8 +1,14 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.7)
+ * WeDo Tank v3 — Stylesheet (v2.8)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.8:
+ *  - Fix borde cono desplazado: forzar width/height 100% + display:block
+ *    + overflow:visible en .tank-cone-border. Sin overflow:visible,
+ *    el trazo (stroke-width 3, no escalado) se recortaba 1.5px en los
+ *    bordes y deformaba la posicion visual de la linea.
  *
  * Cambios v2.7:
  *  - Soporte para skip pattern de labels (.scale-major.label-hidden).
@@ -250,6 +256,10 @@
 .tank-cone-border {
     position: absolute;
     inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    display: block;
     pointer-events: none;
     z-index: 3;
 }
