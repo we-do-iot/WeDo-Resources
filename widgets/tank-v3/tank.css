@@ -1,8 +1,14 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.9)
+ * WeDo Tank v3 — Stylesheet (v2.10)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.10:
+ *  - Colores configurables por settings via CSS vars (sensor-container):
+ *    --card-bg, --primary-color, --secondary-color, --label-color,
+ *    --scale-color. Cada una fallback al valor previo si no se setea.
+ *    .scale-minor-line usa scale-color con opacity 0.6 para diferenciarse.
  *
  * Cambios v2.9:
  *  - Clip-path del cono dinamico: --cone-pct (default 26) controla
@@ -94,7 +100,7 @@
 
 /* ---------- Card ---------- */
 .metric-card {
-    background-color: #ffffff;
+    background-color: var(--card-bg, #ffffff);
     border-radius: 8px;
     padding: clamp(6px, 2cqmin, 12px);
     display: flex;
@@ -353,7 +359,7 @@
     transform: translateY(-50%);
     width: var(--scale-line-w);
     height: 1.5px;
-    background-color: var(--wedo-casi-negro);
+    background-color: var(--scale-color, var(--wedo-casi-negro));
 }
 
 .scale-major-label {
@@ -366,7 +372,7 @@
     font-family: 'Courier New', 'Roboto Mono', monospace;
     font-size: clamp(11px, 3.2cqmin, 15px);
     font-weight: 700;
-    color: var(--wedo-casi-negro);
+    color: var(--scale-color, var(--wedo-casi-negro));
     line-height: 1;
     letter-spacing: -0.5px;
     white-space: nowrap;
@@ -385,7 +391,8 @@
 .scale-minor-line {
     width: clamp(3px, 1cqmin, 4px);
     height: 1px;
-    background-color: var(--wedo-gris);
+    background-color: var(--scale-color, var(--wedo-gris));
+    opacity: 0.6;
 }
 
 .scale-cone-marker .scale-major-line {
@@ -423,7 +430,7 @@
 .card-value {
     font-size: clamp(18px, 7.8cqmin, 34px);
     font-weight: 700;
-    color: var(--wedo-casi-negro);
+    color: var(--secondary-color, var(--wedo-casi-negro));
     line-height: 1.1;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
@@ -432,20 +439,20 @@
 }
 
 .card-value--primary {
-    color: var(--wedo-naranja);
+    color: var(--primary-color, var(--wedo-naranja));
     font-size: clamp(24px, 9.6cqmin, 44px);
 }
 
 .card-value .unit {
     font-size: clamp(13px, 4.8cqmin, 22px);
     font-weight: 500;
-    color: var(--wedo-gris);
+    color: var(--label-color, var(--wedo-gris));
     margin-left: 2px;
 }
 
 .card-label {
     font-size: clamp(12px, 3.12cqmin, 16px);
-    color: var(--wedo-gris);
+    color: var(--label-color, var(--wedo-gris));
     text-transform: uppercase;
     letter-spacing: 0.8px;
     margin-top: 2px;
@@ -456,7 +463,7 @@
 
 .last-update {
     font-size: clamp(11px, 3cqmin, 13px);
-    color: var(--wedo-gris);
+    color: var(--label-color, var(--wedo-gris));
     width: 100%;
     text-align: right;
     padding: 2px 4px 0;
