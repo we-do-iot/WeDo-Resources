@@ -12,7 +12,7 @@
  *    Solucion: prefijo unico wtk- en todas las clases compartibles
  *    (sensor-container, metric-card, card-content, card-value, card-label,
  *    last-update, unit, data-block, clickable; screw -> tank-screw).
- *    Las clases tank-*/scale-*/layout-* ya eran unicas o dependen de un
+ *    Las clases tank-, scale- y layout- ya eran unicas o dependen de un
  *    descendiente unico, no colisionan.
  *
  * Cambios v2.10:
