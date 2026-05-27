@@ -1,8 +1,19 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.10)
+ * WeDo Tank v3 — Stylesheet (v2.11)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.11:
+ *  - FIX cross-widget: este CSS se inyecta GLOBAL (resource jsDelivr) y
+ *    persiste en <head> al navegar entre dashboards (TB es SPA). Las
+ *    clases genericas (.metric-card, .card-value, .sensor-container, etc)
+ *    pisaban otros widgets (ej Simple card) hasta hacer Ctrl+Shift+R.
+ *    Solucion: prefijo unico wtk- en todas las clases compartibles
+ *    (sensor-container, metric-card, card-content, card-value, card-label,
+ *    last-update, unit, data-block, clickable; screw -> tank-screw).
+ *    Las clases tank-*/scale-*/layout-* ya eran unicas o dependen de un
+ *    descendiente unico, no colisionan.
  *
  * Cambios v2.10:
  *  - Colores configurables por settings via CSS vars (sensor-container):
@@ -69,7 +80,7 @@
  * ========================================================== */
 
 /* ---------- Variables ---------- */
-.sensor-container {
+.wtk-sensor-container {
     --wedo-naranja: #EE7623;
     --wedo-naranja-dark: #c45d18;
     --wedo-casi-negro: #24272A;
@@ -87,7 +98,7 @@
     margin: 0;
 }
 
-.sensor-container {
+.wtk-sensor-container {
     font-family: 'Roboto', Arial, sans-serif;
     background-color: transparent;
     width: 100%;
@@ -99,7 +110,7 @@
 }
 
 /* ---------- Card ---------- */
-.metric-card {
+.wtk-metric-card {
     background-color: var(--card-bg, #ffffff);
     border-radius: 8px;
     padding: clamp(6px, 2cqmin, 12px);
@@ -116,8 +127,8 @@
     position: relative;
 }
 
-.metric-card.clickable { cursor: pointer; }
-.metric-card.clickable:hover { border-left-color: #ff8c42; }
+.wtk-metric-card.wtk-clickable { cursor: pointer; }
+.wtk-metric-card.wtk-clickable:hover { border-left-color: #ff8c42; }
 
 /* ---------- Tank container ---------- */
 .tank-container {
@@ -194,7 +205,7 @@
 }
 
 /* Tornillos en las 4 esquinas */
-.screw {
+.tank-screw {
     position: absolute;
     width: clamp(3px, 1cqmin, 5px);
     height: clamp(3px, 1cqmin, 5px);
@@ -202,10 +213,10 @@
     border-radius: 50%;
     z-index: 4;
 }
-.screw.tl { top: clamp(3px, 1.2cqmin, 6px); left: clamp(3px, 1.2cqmin, 6px); }
-.screw.tr { top: clamp(3px, 1.2cqmin, 6px); right: clamp(3px, 1.2cqmin, 6px); }
-.screw.bl { bottom: clamp(3px, 1.2cqmin, 6px); left: clamp(3px, 1.2cqmin, 6px); }
-.screw.br { bottom: clamp(3px, 1.2cqmin, 6px); right: clamp(3px, 1.2cqmin, 6px); }
+.tank-screw.tl { top: clamp(3px, 1.2cqmin, 6px); left: clamp(3px, 1.2cqmin, 6px); }
+.tank-screw.tr { top: clamp(3px, 1.2cqmin, 6px); right: clamp(3px, 1.2cqmin, 6px); }
+.tank-screw.bl { bottom: clamp(3px, 1.2cqmin, 6px); left: clamp(3px, 1.2cqmin, 6px); }
+.tank-screw.br { bottom: clamp(3px, 1.2cqmin, 6px); right: clamp(3px, 1.2cqmin, 6px); }
 
 /* ---------- Cono ---------- */
 .tank-cone-group {
@@ -406,7 +417,7 @@
 }
 
 /* ---------- Card content ---------- */
-.card-content {
+.wtk-card-content {
     text-align: center;
     width: 100%;
     flex-shrink: 0;
@@ -418,7 +429,7 @@
     gap: clamp(4px, 2cqmin, 14px);
 }
 
-.data-block {
+.wtk-data-block {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -427,7 +438,7 @@
 }
 
 /* TIPOGRAFIA */
-.card-value {
+.wtk-card-value {
     font-size: clamp(18px, 7.8cqmin, 34px);
     font-weight: 700;
     color: var(--secondary-color, var(--wedo-casi-negro));
@@ -438,19 +449,19 @@
     text-overflow: ellipsis;
 }
 
-.card-value--primary {
+.wtk-card-value--primary {
     color: var(--primary-color, var(--wedo-naranja));
     font-size: clamp(24px, 9.6cqmin, 44px);
 }
 
-.card-value .unit {
+.wtk-card-value .wtk-unit {
     font-size: clamp(13px, 4.8cqmin, 22px);
     font-weight: 500;
     color: var(--label-color, var(--wedo-gris));
     margin-left: 2px;
 }
 
-.card-label {
+.wtk-card-label {
     font-size: clamp(12px, 3.12cqmin, 16px);
     color: var(--label-color, var(--wedo-gris));
     text-transform: uppercase;
@@ -461,7 +472,7 @@
     text-overflow: ellipsis;
 }
 
-.last-update {
+.wtk-last-update {
     font-size: clamp(11px, 3cqmin, 13px);
     color: var(--label-color, var(--wedo-gris));
     width: 100%;
@@ -481,9 +492,9 @@
 
 @container tank (max-width: 180px), (max-height: 180px) {
     .scale-minor { display: none; }
-    .data-block.data-secondary { display: none; }
-    .last-update { display: none; }
-    .screw { display: none; }
+    .wtk-data-block.wtk-data-secondary { display: none; }
+    .wtk-last-update { display: none; }
+    .tank-screw { display: none; }
 }
 
 /* Label skip pattern: JS marca ticks intermedios con .label-hidden
@@ -493,7 +504,7 @@
 }
 
 @container tank (max-height: 130px) {
-    .card-label { display: none; }
+    .wtk-card-label { display: none; }
     .scale-cone-marker { display: none; }
 }
 
@@ -508,21 +519,21 @@
 .tank-scale.density-very-low .scale-minor { display: none; }
 
 .layout-tiny .tank-container,
-.layout-tiny .card-label,
-.layout-tiny .last-update {
+.layout-tiny .wtk-card-label,
+.layout-tiny .wtk-last-update {
     display: none;
 }
-.layout-tiny .metric-card {
+.layout-tiny .wtk-metric-card {
     justify-content: center;
     padding: 4px 8px;
 }
 
 .layout-narrow .tank-container,
 .layout-narrow .tank-scale,
-.layout-narrow .last-update {
+.layout-narrow .wtk-last-update {
     display: none;
 }
-.layout-narrow .metric-card {
+.layout-narrow .wtk-metric-card {
     padding: 4px;
     gap: 2px;
 }
