@@ -1,8 +1,11 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.15)
+ * WeDo Tank v3 — Stylesheet (v2.16)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.16:
+ *  - Description centrada (text-align: center).
  *
  * Cambios v2.15:
  *  - Description text opcional debajo de card-content (.wtk-description),
@@ -590,7 +593,7 @@
     font-size: clamp(10px, 2.6cqmin, 14px);
     color: var(--label-color, var(--wedo-gris));
     width: 100%;
-    text-align: left;
+    text-align: center;
     padding: 2px 4px 0;
     margin-top: 2px;
     flex-shrink: 0;
