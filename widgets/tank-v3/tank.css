@@ -1,8 +1,17 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.11)
+ * WeDo Tank v3 — Stylesheet (v2.12)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.12:
+ *  - Scopear todas las reglas con clases tank-, scale-, layout-, hide-scale
+ *    bajo .wtk-sensor-container ancestor. v2.11 prefijo wtk- en clases
+ *    genericas (sensor-container, metric-card, etc) pero tank-/scale-/
+ *    layout- quedaron sin prefijo y colisionaban con WeDo Tank v2 que
+ *    tambien usa .tank-container, .tank-wrapper, .tank-body, .tank-scale.
+ *    Ahora todas las reglas requieren .wtk-sensor-container como ancestro
+ *    (excepto :host y wtk-* que son unicas). Zero-leak garantizado.
  *
  * Cambios v2.11:
  *  - FIX cross-widget: este CSS se inyecta GLOBAL (resource jsDelivr) y
@@ -131,7 +140,7 @@
 .wtk-metric-card.wtk-clickable:hover { border-left-color: #ff8c42; }
 
 /* ---------- Tank container ---------- */
-.tank-container {
+.wtk-sensor-container .tank-container {
     flex: 1;
     width: 100%;
     display: flex;
@@ -146,7 +155,7 @@
 }
 
 /* ---------- Wrapper ---------- */
-.tank-wrapper {
+.wtk-sensor-container .tank-wrapper {
     display: flex;
     flex-direction: row;
     align-items: stretch;
@@ -161,7 +170,7 @@
    pasa el alto del tank-container. cqb/cqi referencian a .tank-container
    (container-name tankc).
    width:max-content encoge al ancho real, tank-container lo centra. */
-.tank-wrapper--horizontal {
+.wtk-sensor-container .tank-wrapper--horizontal {
     flex-direction: row;
     height: min(95cqb, calc((100cqi - 80px) / 2.4));
     width: max-content;
@@ -170,10 +179,10 @@
     gap: 2px;
 }
 
-.tank-wrapper--cone { align-items: stretch; }
+.wtk-sensor-container .tank-wrapper--cone { align-items: stretch; }
 
 /* ---------- Vertical default ---------- */
-.tank-body {
+.wtk-sensor-container .tank-body {
     aspect-ratio: 7 / 12;
     height: 100%;
     width: auto;
@@ -188,7 +197,7 @@
 }
 
 /* ---------- Horizontal acostado ---------- */
-.tank-body--horizontal {
+.wtk-sensor-container .tank-body--horizontal {
     aspect-ratio: 12 / 5;
     height: 100%;
     width: auto;
@@ -205,7 +214,7 @@
 }
 
 /* Tornillos en las 4 esquinas */
-.tank-screw {
+.wtk-sensor-container .tank-screw {
     position: absolute;
     width: clamp(3px, 1cqmin, 5px);
     height: clamp(3px, 1cqmin, 5px);
@@ -213,20 +222,20 @@
     border-radius: 50%;
     z-index: 4;
 }
-.tank-screw.tl { top: clamp(3px, 1.2cqmin, 6px); left: clamp(3px, 1.2cqmin, 6px); }
-.tank-screw.tr { top: clamp(3px, 1.2cqmin, 6px); right: clamp(3px, 1.2cqmin, 6px); }
-.tank-screw.bl { bottom: clamp(3px, 1.2cqmin, 6px); left: clamp(3px, 1.2cqmin, 6px); }
-.tank-screw.br { bottom: clamp(3px, 1.2cqmin, 6px); right: clamp(3px, 1.2cqmin, 6px); }
+.wtk-sensor-container .tank-screw.tl { top: clamp(3px, 1.2cqmin, 6px); left: clamp(3px, 1.2cqmin, 6px); }
+.wtk-sensor-container .tank-screw.tr { top: clamp(3px, 1.2cqmin, 6px); right: clamp(3px, 1.2cqmin, 6px); }
+.wtk-sensor-container .tank-screw.bl { bottom: clamp(3px, 1.2cqmin, 6px); left: clamp(3px, 1.2cqmin, 6px); }
+.wtk-sensor-container .tank-screw.br { bottom: clamp(3px, 1.2cqmin, 6px); right: clamp(3px, 1.2cqmin, 6px); }
 
 /* ---------- Cono ---------- */
-.tank-cone-group {
+.wtk-sensor-container .tank-cone-group {
     position: relative;
     height: 100%;
     flex-shrink: 1;
     aspect-ratio: 7 / 13.5;
 }
 
-.tank-cone-clipped {
+.wtk-sensor-container .tank-cone-clipped {
     position: absolute;
     inset: 0;
     --cone-pct: 26;
@@ -240,13 +249,13 @@
     overflow: hidden;
 }
 
-.tank-cone-bg {
+.wtk-sensor-container .tank-cone-bg {
     position: absolute;
     inset: 0;
     background-color: var(--wedo-gris-tanque);
 }
 
-.tank-cone-liquid-overlay {
+.wtk-sensor-container .tank-cone-liquid-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -257,13 +266,13 @@
     z-index: 1;
 }
 
-.tank-cone-liquid-fill {
+.wtk-sensor-container .tank-cone-liquid-fill {
     position: absolute;
     inset: 0;
     background-color: var(--liquid-color);
 }
 
-.tank-cone-liquid-fill::before {
+.wtk-sensor-container .tank-cone-liquid-fill::before {
     content: '';
     position: absolute;
     top: 0;
@@ -274,7 +283,7 @@
     z-index: 1;
 }
 
-.tank-cone-liquid-fill::after {
+.wtk-sensor-container .tank-cone-liquid-fill::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -282,7 +291,7 @@
     pointer-events: none;
 }
 
-.tank-cone-border {
+.wtk-sensor-container .tank-cone-border {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -294,7 +303,7 @@
 }
 
 /* ---------- Liquid (default + horizontal) ---------- */
-.tank-liquid {
+.wtk-sensor-container .tank-liquid {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -304,7 +313,7 @@
     transition: height 0.5s ease-out;
 }
 
-.tank-liquid::before {
+.wtk-sensor-container .tank-liquid::before {
     content: '';
     position: absolute;
     top: 0;
@@ -315,7 +324,7 @@
     z-index: 1;
 }
 
-.tank-liquid::after {
+.wtk-sensor-container .tank-liquid::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -323,7 +332,7 @@
     pointer-events: none;
 }
 
-.tank-glass {
+.wtk-sensor-container .tank-glass {
     position: absolute;
     inset: 0;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.35) 30%, rgba(255, 255, 255, 0) 100%);
@@ -332,7 +341,7 @@
 }
 
 /* ---------- Scale ---------- */
-.tank-scale {
+.wtk-sensor-container .tank-scale {
     position: relative;
     height: calc(100% - 4px);
     align-self: center;
@@ -346,7 +355,7 @@
 
 /* En horizontal: stretch hace match con altura del tank-body.
    No usamos height:% porque el wrapper es height:auto y colapsaria. */
-.tank-wrapper--horizontal .tank-scale {
+.wtk-sensor-container .tank-wrapper--horizontal .tank-scale {
     height: auto;
     align-self: stretch;
     min-height: 0;
@@ -355,7 +364,7 @@
 /* scale-major: contenedor invisible, line y label son hijos absolutos
    con left/right acotados al ancho real del .tank-scale, evitando
    overflow horizontal del label. */
-.scale-major {
+.wtk-sensor-container .scale-major {
     position: absolute;
     left: 0;
     right: 0;
@@ -363,7 +372,7 @@
     transform: translateY(-50%);
 }
 
-.scale-major-line {
+.wtk-sensor-container .scale-major-line {
     position: absolute;
     left: 0;
     top: 50%;
@@ -373,7 +382,7 @@
     background-color: var(--scale-color, var(--wedo-casi-negro));
 }
 
-.scale-major-label {
+.wtk-sensor-container .scale-major-label {
     position: absolute;
     left: calc(var(--scale-line-w) + var(--scale-gap));
     right: 0;
@@ -391,7 +400,7 @@
     text-overflow: clip;
 }
 
-.scale-minor {
+.wtk-sensor-container .scale-minor {
     position: absolute;
     left: 0;
     width: 0;
@@ -399,19 +408,19 @@
     transform: translateY(-50%);
 }
 
-.scale-minor-line {
+.wtk-sensor-container .scale-minor-line {
     width: clamp(3px, 1cqmin, 4px);
     height: 1px;
     background-color: var(--scale-color, var(--wedo-gris));
     opacity: 0.6;
 }
 
-.scale-cone-marker .scale-major-line {
+.wtk-sensor-container .scale-cone-marker .scale-major-line {
     background: var(--wedo-naranja);
     width: clamp(7px, 2.2cqmin, 10px);
 }
 
-.scale-cone-marker .scale-major-label {
+.wtk-sensor-container .scale-cone-marker .scale-major-label {
     color: var(--wedo-naranja);
     font-size: clamp(8px, 2.6cqmin, 12px);
 }
@@ -499,7 +508,7 @@
 
 /* Label skip pattern: JS marca ticks intermedios con .label-hidden
    manteniendo siempre primero (0) y ultimo (max) visibles. */
-.scale-major.label-hidden .scale-major-label {
+.wtk-sensor-container .scale-major.label-hidden .scale-major-label {
     display: none;
 }
 
@@ -515,29 +524,29 @@
 /* ========================================================
  * Clases controladas por JS
  * ======================================================== */
-.tank-scale.density-low .scale-minor:nth-child(even) { display: none; }
-.tank-scale.density-very-low .scale-minor { display: none; }
+.wtk-sensor-container .tank-scale.density-low .scale-minor:nth-child(even) { display: none; }
+.wtk-sensor-container .tank-scale.density-very-low .scale-minor { display: none; }
 
-.layout-tiny .tank-container,
-.layout-tiny .wtk-card-label,
-.layout-tiny .wtk-last-update {
+.wtk-sensor-container.layout-tiny .tank-container,
+.wtk-sensor-container.layout-tiny .wtk-card-label,
+.wtk-sensor-container.layout-tiny .wtk-last-update {
     display: none;
 }
-.layout-tiny .wtk-metric-card {
+.wtk-sensor-container.layout-tiny .wtk-metric-card {
     justify-content: center;
     padding: 4px 8px;
 }
 
-.layout-narrow .tank-container,
-.layout-narrow .tank-scale,
-.layout-narrow .wtk-last-update {
+.wtk-sensor-container.layout-narrow .tank-container,
+.wtk-sensor-container.layout-narrow .tank-scale,
+.wtk-sensor-container.layout-narrow .wtk-last-update {
     display: none;
 }
-.layout-narrow .wtk-metric-card {
+.wtk-sensor-container.layout-narrow .wtk-metric-card {
     padding: 4px;
     gap: 2px;
 }
 
-.hide-scale .tank-scale {
+.wtk-sensor-container.hide-scale .tank-scale {
     display: none;
 }
