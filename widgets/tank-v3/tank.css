@@ -1,8 +1,13 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.14)
+ * WeDo Tank v3 — Stylesheet (v2.15)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.15:
+ *  - Description text opcional debajo de card-content (.wtk-description),
+ *    estilo etiqueta (fuente Roboto, mas chico). Color por settings, default
+ *    label-color. Se oculta en layout-tiny y container <=180px.
  *
  * Cambios v2.14:
  *  - FIX cone bleed: el clip-path se aplicaba a cada div (bg/liquid/glass)
@@ -580,6 +585,22 @@
     text-overflow: ellipsis;
 }
 
+.wtk-description {
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: clamp(10px, 2.6cqmin, 14px);
+    color: var(--label-color, var(--wedo-gris));
+    width: 100%;
+    text-align: left;
+    padding: 2px 4px 0;
+    margin-top: 2px;
+    flex-shrink: 0;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
 .wtk-last-update {
     font-size: clamp(11px, 3cqmin, 13px);
     color: var(--label-color, var(--wedo-gris));
@@ -602,6 +623,7 @@
     .scale-minor { display: none; }
     .wtk-data-block.wtk-data-secondary { display: none; }
     .wtk-last-update { display: none; }
+    .wtk-description { display: none; }
     .tank-screw { display: none; }
 }
 
@@ -628,7 +650,8 @@
 
 .wtk-sensor-container.layout-tiny .tank-container,
 .wtk-sensor-container.layout-tiny .wtk-card-label,
-.wtk-sensor-container.layout-tiny .wtk-last-update {
+.wtk-sensor-container.layout-tiny .wtk-last-update,
+.wtk-sensor-container.layout-tiny .wtk-description {
     display: none;
 }
 .wtk-sensor-container.layout-tiny .wtk-metric-card {
