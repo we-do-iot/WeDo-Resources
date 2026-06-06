@@ -1,8 +1,16 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.13)
+ * WeDo Tank v3 — Stylesheet (v2.14)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.14:
+ *  - FIX cone bleed: el clip-path se aplicaba a cada div (bg/liquid/glass)
+ *    por separado. Como clipPathUnits=objectBoundingBox normaliza al bbox
+ *    del elemento clipeado, el liquid (height:pct%) recibia el clip
+ *    comprimido a su franja y el azul sobresalia del cono. Fix: aplicar
+ *    el clip a un solo div padre .tank-composite-clipped (inset:0 = full
+ *    tank); los hijos heredan el clip al render.
  *
  * Cambios v2.13:
  *  - Renderer v_composite generico: silueta unica via SVG path en coords
@@ -322,6 +330,14 @@
     height: 0;
     overflow: hidden;
     pointer-events: none;
+}
+
+/* Capa unica clipeada: el clip-path se aplica aca con objectBoundingBox
+   = full tank. Los hijos (bg/liquid/glass) heredan el clip al render. */
+.wtk-sensor-container .tank-composite-clipped {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
 }
 
 .wtk-sensor-container .tank-composite-bg {
