@@ -1,8 +1,14 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.12)
+ * WeDo Tank v3 — Stylesheet (v2.13)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.13:
+ *  - Renderer v_composite generico: silueta unica via SVG path en coords
+ *    0-1 (clipPathUnits=objectBoundingBox). Bottom none/cone/sphere_cap,
+ *    top none/sphere_cap. Reemplaza la rama clip-path polygon del cone
+ *    cuando hay geometria valida. tank-composite-* clases nuevas.
  *
  * Cambios v2.12:
  *  - Scopear todas las reglas con clases tank-, scale-, layout-, hide-scale
@@ -292,6 +298,83 @@
 }
 
 .wtk-sensor-container .tank-cone-border {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    display: block;
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* ---------- Composite (v_composite: cone/sphere_cap/none any combo) ---------- */
+.wtk-sensor-container .tank-composite-group {
+    position: relative;
+    height: 100%;
+    flex-shrink: 1;
+    aspect-ratio: 7 / 13.5;
+}
+
+.wtk-sensor-container .tank-composite-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.wtk-sensor-container .tank-composite-bg {
+    position: absolute;
+    inset: 0;
+    background-color: var(--wedo-gris-tanque);
+}
+
+.wtk-sensor-container .tank-composite-liquid {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    transition: height 0.5s ease-out;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.wtk-sensor-container .tank-composite-liquid-fill {
+    position: absolute;
+    inset: 0;
+    background-color: var(--liquid-color);
+}
+
+.wtk-sensor-container .tank-composite-liquid-fill::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.4);
+    z-index: 1;
+}
+
+.wtk-sensor-container .tank-composite-liquid-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%);
+    pointer-events: none;
+}
+
+.wtk-sensor-container .tank-composite-glass {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.35) 30%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.wtk-sensor-container .tank-composite-border {
     position: absolute;
     inset: 0;
     width: 100%;
