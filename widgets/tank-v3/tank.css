@@ -1,8 +1,14 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.16)
+ * WeDo Tank v3 — Stylesheet (v2.17)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.17:
+ *  - Nuevo tank shape "rectangular" (caja plana). Render simple sin
+ *    clip-path: .tank-body--rectangular reusa .tank-liquid + .tank-glass.
+ *    Aspect-ratio dinamico via [style.aspect-ratio]=rectAspect del scope
+ *    (clamp [0.2, 5] en widget.js para evitar layouts rotos).
  *
  * Cambios v2.16:
  *  - Description centrada (text-align: center).
@@ -231,6 +237,20 @@
     border-radius: 12px;
     border: 2px solid var(--wedo-casi-negro);
     box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ---------- Rectangular (caja plana) ---------- */
+.wtk-sensor-container .tank-body--rectangular {
+    aspect-ratio: 1;
+    height: 100%;
+    width: auto;
+    min-width: 0;
+    flex-shrink: 1;
+    background-color: var(--wedo-gris-tanque);
+    border-radius: 8px;
+    border: 2px solid var(--wedo-casi-negro);
     position: relative;
     overflow: hidden;
 }
