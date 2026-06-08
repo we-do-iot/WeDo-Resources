@@ -1,8 +1,12 @@
 /* ==========================================================
- * WeDo Tank v3 — Stylesheet (v2.17)
+ * WeDo Tank v3 — Stylesheet (v2.18)
  * --------------------------------------------------------
  * Repo: https://github.com/we-do-iot/WeDo-Resources
  * CDN pin: commit SHA (ver wedo_tank_v3_(industrial).json -> resources)
+ *
+ * Cambios v2.18:
+ *  - .tank-body--rectangular: border-radius 8px -> 0. Caja plana
+ *    industrial = prisma rectangular, esquinas a 90.
  *
  * Cambios v2.17:
  *  - Nuevo tank shape "rectangular" (caja plana). Render simple sin
@@ -249,7 +253,7 @@
     min-width: 0;
     flex-shrink: 1;
     background-color: var(--wedo-gris-tanque);
-    border-radius: 8px;
+    border-radius: 0;
     border: 2px solid var(--wedo-casi-negro);
     position: relative;
     overflow: hidden;
